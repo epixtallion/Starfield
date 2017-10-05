@@ -14,9 +14,12 @@ void draw()
 	rect(0,0,500,500);
 	for (int i = 0; i < p.length; i++){
 		if(p[i].isDead()) p[i] = randParticle(false);
-		p[i].move();
-		p[i].show();
+		else {
+			p[i].move();
+			p[i].show();
+		}
 	}
+	test();
 }
 Particle randParticle(boolean init){
 	int chance = (int) (Math.random()*101 - 1);
@@ -43,6 +46,7 @@ class NormalParticle implements Particle
 		c = color((int) (Math.random()*25+230),
 			(int) (Math.random()*25+230),
 			(int) (Math.random()*25+230));
+		speed = (int) (Math.random()*7+2);
 		if (init){
 			x = (int) (Math.random()*506 - 5);
 			y = (int) (Math.random()*506 - 5);
@@ -56,13 +60,13 @@ class NormalParticle implements Particle
 
 	public boolean isDead(){ return dead; }
 	public void move(){
-		x = x + (int) (cos(angle)*x/2);
-		y = y + (int) (sin(angle)*x/2);
+		x = x + (int) (cos(angle)*x/10*speed);
+		y = y - (int) (sin(angle)*x/10*speed);
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
 			dead = true;
-			System.out.println("Dead!");
+			//System.out.println("Dead!");
 		} else {
 			stroke(255,255,255);
 			point(x,y);
@@ -105,6 +109,7 @@ class JumboParticle extends NormalParticle
 {
 	//Constructor
 	JumboParticle(boolean init){
+	speed = (int) (Math.random()*7+2);
     c = color((int) (Math.random()*25+230),
       (int) (Math.random()*25+230),
       (int) (Math.random()*25+230));
@@ -124,5 +129,26 @@ class JumboParticle extends NormalParticle
 		fill(255);
 		rect(x-10, y-10, 20, 20);
 		//rotate(0);
+	}
+}
+
+int xValueAngle(int angle, int mp){
+	if (angle == 360) return 0;
+	return (int) (Math.sin(angle)*mp);
+}
+int yValueAngle(){
+	if (angle == 270 || angle == 90) return 0;
+	else if (angle == 180) return mp;
+	return (int) (Math.cos(angle)*-1*mp)
+}
+int angleXVal(){}
+int angleYVal(){}
+//Test
+int[] x = {0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360};
+int[]
+void test() {
+	for(int i = 0; i < x.length; i++){
+		System.out.println("x of angle "+x[i]+": "+ sin(radians(x[i]))*50);
+		System.out.println("y of angle "+x[i]+": "+ cos(radians(x[i]))*50);
 	}
 }
