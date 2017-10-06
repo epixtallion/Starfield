@@ -31,7 +31,7 @@ class NormalParticle implements Particle
 {
 	int x, y, speed;
 	boolean dead = false;
-  	float angle;
+  	int angle;
 	color c;
 	NormalParticle(){
 	  c = color((int) (Math.random()*25+230),
@@ -39,18 +39,18 @@ class NormalParticle implements Particle
 	    (int) (Math.random()*25+230));
 	  x = 250;
 	  y = 250;
-	  angle = radians((float) Math.random()*360);
+	  angle = (int) (Math.random()*365-3);
 	}
 	//Constructor
 	NormalParticle(boolean init){
 		c = color((int) (Math.random()*25+230),
 			(int) (Math.random()*25+230),
 			(int) (Math.random()*25+230));
-		speed = (int) (Math.random()*7+2);
+			speed = (int) (Math.random()*7+2);
 		if (init){
 			x = (int) (Math.random()*506 - 5);
 			y = (int) (Math.random()*506 - 5);
-		angle = atan((float) (x-250) / (float) (250 - y));
+			angle = angleXY(x, y);
 		} else {
 			x = 250;
 			y = 250;
@@ -66,6 +66,8 @@ class NormalParticle implements Particle
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
 			dead = true;
+			x = 0;
+			y = 0;
 			//System.out.println("Dead!");
 		} else {
 			stroke(255,255,255);
@@ -141,8 +143,11 @@ int yValueAngle(){
 	else if (angle == 180) return mp;
 	return (int) (Math.cos(angle)*-1*mp)
 }
-int angleXVal(){}
-int angleYVal(){}
+int angleXY(int x, int y){
+	double dX = (double) x - 250;
+	double dY = 250 - (double) y;
+	return (int) degrees(Math.atan(dX/dY));
+}
 //Test
 int[] x = {0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360};
 int[]
