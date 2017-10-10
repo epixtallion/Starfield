@@ -14,16 +14,14 @@ void draw()
 	rect(0,0,500,500);
 	for (int i = 0; i < p.length; i++){
 		if(p[i].isDead()) p[i] = randParticle(false);
-		else {
-			p[i].move();
-			p[i].show();
-		}
+		p[i].move();
+		p[i].show();
 	}
 }
 Particle randParticle(boolean init){
 	int chance = (int) (Math.random()*101 - 1);
-	if (chance < 10) return new OddballParticle(init);
-	else if (chance < 25) return new JumboParticle(init);
+	if (chance < 3) return new OddballParticle(init);
+	else if (chance < 15) return new JumboParticle(init);
 	else return new NormalParticle(init);
 }
 class NormalParticle implements Particle
@@ -45,7 +43,7 @@ class NormalParticle implements Particle
 		c = color((int) (Math.random()*25+230),
 			(int) (Math.random()*25+230),
 			(int) (Math.random()*25+230));
-			speed = (int) (Math.random()*7+2);
+		speed = (int) (Math.random()*7+2);
 		if (init){
 			x = (int) (Math.random()*506 - 5);
 			y = (int) (Math.random()*506 - 5);
@@ -59,15 +57,14 @@ class NormalParticle implements Particle
 
 	public boolean isDead(){ return dead; }
 	public void move(){
-		x = x + (int) xValueAngle(angle)*speed;
-		y = y + (int) yValueAngle(angle)*speed;
+		x = x + (int) (xValueAngle(angle)*speed);
+		y = y + (int) (yValueAngle(angle)*speed);
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
 			dead = true;
 			x = 0;
 			y = 0;
-			//System.out.println("Dead!");
 		} else {
 			stroke(255,255,255);
 			point(x,y);
@@ -96,14 +93,20 @@ class OddballParticle implements Particle
     }
 	}
 
-  public boolean isDead(){ return dead; }
+ 	public boolean isDead(){ return dead; }
 	public void move(){
 		x = x + (int) (Math.random()*9-4);
 		y = y + (int) (Math.random()*9-4);
 	}
 	public void show(){
-		fill(255, 50, 50);
-		ellipse(x, y, 20, 20);
+		if (x < 0 || x > 500 || y < 0 || y > 500){
+			dead = true;
+			x = 0;
+			y = 0;
+		} else {
+			fill(255, 50, 50);
+			ellipse(x, y, 20, 20);
+		}
 	}
 }
 class JumboParticle extends NormalParticle
@@ -125,11 +128,15 @@ class JumboParticle extends NormalParticle
     }
 	}
 	public void show(){
+		if (x < 0 || x > 500 || y < 0 || y > 500){
+			dead = true;
+			x = 0;
+			y = 0;
+		} else {
+			fill(255);
+			rect(x-10, y-10, 20, 20);
+		}
 		angle = angle + (int) (Math.random()*5);
-		//rotate(radians(angle));
-		fill(255);
-		rect(x-10, y-10, 20, 20);
-		//rotate(0);
 	}
 }
 
