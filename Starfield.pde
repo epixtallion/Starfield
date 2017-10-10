@@ -19,9 +19,13 @@ void draw()
 	}
 }
 Particle randParticle(boolean init){
+	int numOdds = 0;
+	for(int i = 0; i<p.length; i++){
+		if (p[i] instanceof OddballParticle) numOdds++;
+	}
 	int chance = (int) (Math.random()*101 - 1);
-	if (chance < 3) return new OddballParticle(init);
-	else if (chance < 15) return new JumboParticle(init);
+	if (chance < 3 && numOdds < 7) return new OddballParticle(init);
+	else if (chance < 10) return new JumboParticle(init);
 	else return new NormalParticle(init);
 }
 class NormalParticle implements Particle
@@ -95,8 +99,8 @@ class OddballParticle implements Particle
 
  	public boolean isDead(){ return dead; }
 	public void move(){
-		x = x + (int) (Math.random()*9-4);
-		y = y + (int) (Math.random()*9-4);
+		x = x + (int) (Math.random()*20-10);
+		y = y + (int) (Math.random()*20-10);
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
@@ -113,19 +117,19 @@ class JumboParticle extends NormalParticle
 {
 	//Constructor
 	JumboParticle(boolean init){
-	speed = (int) (Math.random()*7+2);
-    c = color((int) (Math.random()*25+230),
-      (int) (Math.random()*25+230),
-      (int) (Math.random()*25+230));
-    if (init){
-      x = (int) (Math.random()*506 - 5);
-      y = (int) (Math.random()*506 - 5);
-      angle = atan((float) (x-250) / (float) (250 - y));
-    } else {
-      x = 250;
-      y = 250;
-      angle = (float) Math.random()*360;
-    }
+		speed = (int) (Math.random()*7+2);
+	    c = color((int) (Math.random()*25+230),
+	      (int) (Math.random()*25+230),
+	      (int) (Math.random()*25+230));
+	    if (init){
+	      x = (int) (Math.random()*506 - 5);
+	      y = (int) (Math.random()*506 - 5);
+	      angle = atan((float) (x-250) / (float) (250 - y));
+	    } else {
+	      x = 250;
+	      y = 250;
+	      angle = (float) Math.random()*360;
+	    }
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
@@ -136,7 +140,6 @@ class JumboParticle extends NormalParticle
 			fill(255);
 			rect(x-10, y-10, 20, 20);
 		}
-		angle = angle + (int) (Math.random()*5);
 	}
 }
 
