@@ -19,7 +19,6 @@ void draw()
 			p[i].show();
 		}
 	}
-	test();
 }
 Particle randParticle(boolean init){
 	int chance = (int) (Math.random()*101 - 1);
@@ -31,7 +30,7 @@ class NormalParticle implements Particle
 {
 	int x, y, speed;
 	boolean dead = false;
-  	int angle;
+  	double angle;
 	color c;
 	NormalParticle(){
 	  c = color((int) (Math.random()*25+230),
@@ -39,7 +38,7 @@ class NormalParticle implements Particle
 	    (int) (Math.random()*25+230));
 	  x = 250;
 	  y = 250;
-	  angle = (int) (Math.random()*365-3);
+	  angle = Math.random()*365-3;
 	}
 	//Constructor
 	NormalParticle(boolean init){
@@ -54,14 +53,14 @@ class NormalParticle implements Particle
 		} else {
 			x = 250;
 			y = 250;
-			angle = radians((float) Math.random()*360);
+			angle = Math.random()*365-3;
 		}
 	}
 
 	public boolean isDead(){ return dead; }
 	public void move(){
-		x = x + (int) (cos(angle)*x/10*speed);
-		y = y - (int) (sin(angle)*x/10*speed);
+		x = x + (int) xValueAngle(angle)*speed;
+		y = y + (int) yValueAngle(angle)*speed;
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
@@ -134,21 +133,21 @@ class JumboParticle extends NormalParticle
 	}
 }
 
-int xValueAngle(int angle, int mp){
+double xValueAngle(double angle){
 	if (angle == 360) return 0;
-	return (int) (Math.sin(angle)*mp);
+	return (Math.sin(radians((float)angle)));
 }
-int yValueAngle(){
+double yValueAngle(double angle){
 	if (angle == 270 || angle == 90) return 0;
-	else if (angle == 180) return mp;
-	return (int) (Math.cos(angle)*-1*mp)
+	else if (angle == 180) return 1;
+	return (Math.cos(radians((float)angle)));
 }
 int angleXY(int x, int y){
 	double dX = (double) x - 250;
-	double dY = 250 - (double) y;
-	return (int) degrees(Math.atan(dX/dY));
+	double dY = (double) y - 250;
+	return (int) degrees((float)Math.atan(dX/dY));
 }
-//Test
+/*Test
 int[] x = {0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360};
 int[]
 void test() {
@@ -156,4 +155,4 @@ void test() {
 		System.out.println("x of angle "+x[i]+": "+ sin(radians(x[i]))*50);
 		System.out.println("y of angle "+x[i]+": "+ cos(radians(x[i]))*50);
 	}
-}
+}*/
