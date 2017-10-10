@@ -81,26 +81,20 @@ interface Particle
 	public void move();
 	public void show();
 }
-class OddballParticle implements Particle
+class OddballParticle extends NormalParticle implements Particle
 {
-	int x, y;
-	boolean dead = false;
-	color c;
 	//Constructor
 	OddballParticle(boolean init){
-    if (init){
-      x = (int) (Math.random()*506 - 5);
-      y = (int) (Math.random()*506 - 5);
-    } else {
-      x = 250;
-      y = 250;
-    }
-	}
-
- 	public boolean isDead(){ return dead; }
-	public void move(){
-		x = x + (int) (Math.random()*20-10);
-		y = y + (int) (Math.random()*20-10);
+		speed = (int) (Math.random()*7+2);
+		if (init){
+			x = (int) (Math.random()*506 - 5);
+			y = (int) (Math.random()*506 - 5);
+			angle = angleXY(x, y);
+		} else {
+			x = 250;
+			y = 250;
+			angle = Math.random()*365-3;
+		}
 	}
 	public void show(){
 		if (x < 0 || x > 500 || y < 0 || y > 500){
@@ -111,6 +105,7 @@ class OddballParticle implements Particle
 			fill(255, 50, 50);
 			ellipse(x, y, 20, 20);
 		}
+		angle++;
 	}
 }
 class JumboParticle extends NormalParticle
